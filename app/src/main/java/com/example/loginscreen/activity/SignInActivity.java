@@ -92,7 +92,8 @@ public class SignInActivity extends AppCompatActivity {
                             try{
                                 String userId = Base64Custom.codeBase64(user.getEmail());
                                 user.setId(userId);
-                                user.salvarNoFirebase();
+                                //Quando desejar salvar no firebase, implementar o método dentro da classe User e chamar a função
+                                //user.salvarNoFirebase();
 
                             }catch (Exception e){
                                 e.printStackTrace();
