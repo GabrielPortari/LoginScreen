@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //configurações iniciais
         verificarUsuarioLogado();
+
         editEmail = findViewById(R.id.textInputEmail_loginScreen);
         editSenha = findViewById(R.id.textInputSenha_loginScreen);
         textCadastro = findViewById(R.id.textCadastro_loginScreen);
