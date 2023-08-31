@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         //configurações iniciais
+        verificarUsuarioLogado();
         editEmail = findViewById(R.id.textInputEmail_loginScreen);
         editSenha = findViewById(R.id.textInputSenha_loginScreen);
         textCadastro = findViewById(R.id.textCadastro_loginScreen);
@@ -123,5 +124,11 @@ public class LoginActivity extends AppCompatActivity {
         //chama a main activity
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
+    }
+    public void verificarUsuarioLogado(){
+        firebaseAuth = FirebaseConfiguration.getFirebaseAuthReference();
+        if(firebaseAuth.getCurrentUser() != null){
+            abrirMainActivity();
+        }
     }
 }
