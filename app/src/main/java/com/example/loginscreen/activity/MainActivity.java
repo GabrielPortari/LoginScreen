@@ -10,8 +10,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.loginscreen.R;
-import com.example.loginscreen.configuration.FirebaseConfiguration;
-import com.example.loginscreen.configuration.FirebaseUsuario;
+import com.example.loginscreen.configuration.ConfiguracaoFirebase;
+import com.example.loginscreen.configuration.UsuarioFirebase;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,10 +24,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //configurações iniciais
-        firebaseAuth = FirebaseConfiguration.getFirebaseAuthReference();
+        firebaseAuth = ConfiguracaoFirebase.getFirebaseAuthReference();
         textNome = findViewById(R.id.textNome_main);
 
-        String nomeUsuario = FirebaseUsuario.getUsuarioAtual().getDisplayName();
+        String nomeUsuario = UsuarioFirebase.getUsuarioAtual().getDisplayName();
         textNome.setText(nomeUsuario);
 
     }

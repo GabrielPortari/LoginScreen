@@ -3,6 +3,7 @@ package com.example.loginscreen.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,9 +11,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.loginscreen.R;
-import com.example.loginscreen.configuration.FirebaseConfiguration;
-import com.example.loginscreen.configuration.FirebaseUsuario;
-import com.example.loginscreen.helper.Base64Custom;
+import com.example.loginscreen.configuration.ConfiguracaoFirebase;
+import com.example.loginscreen.configuration.UsuarioFirebase;
 import com.example.loginscreen.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -33,11 +33,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        //configurações iniciais
-        editNome = findViewById(R.id.textInputNome_signIn);
-        editEmail = findViewById(R.id.textInputEmail_signIn);
-        editSenha = findViewById(R.id.textInputSenha_signIn);
-        botaoRegistrar = findViewById(R.id.buttonRegistrar_signIn);
+        configuracoesIniciais();
 
         botaoRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +42,13 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
     }
+    private void configuracoesIniciais(){
+        editNome = findViewById(R.id.textInputNome_signIn);
+        editEmail = findViewById(R.id.textInputEmail_signIn);
+        editSenha = findViewById(R.id.textInputSenha_signIn);
+        botaoRegistrar = findViewById(R.id.buttonRegistrar_signIn);
+    }
+
     public void validarCadastro(View view){
         String textNome = editNome.getText().toString();
         String textEmail = editEmail.getText().toString();
@@ -71,33 +74,28 @@ public class SignInActivity extends AppCompatActivity {
         }
     }
     public void cadastrarUsuario(User user){
-        firebaseAuth = FirebaseConfiguration.getFirebaseAuthReference();
+        firebaseAuth = ConfiguracaoFirebase.getFirebaseAuthReference();
         firebaseAuth.createUserWithEmailAndPassword(user.getEmail(), user.getSenha())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Log.i("AUTH", "Cadastro de usuário completo");
-                            Toast.makeText(SignInActivity.this, "Cadastro completo com sucesso", Toast.LENGTH_SHORT).show();
-
-                            //recupera o email em base64 para usar como identificador
-                            String id = Base64Custom.codeBase64(user.getEmail());
+                            //recupera o uid do usuario
+                            String id = task.getResult().getUser().getUid();
                             user.setId(id);
 
-                            //salva o nome do usuario no firebaseAuth
-                            FirebaseUsuario.atualizaNomeUsuario(user.getNome());
+                            //salva o usuario no firebase database
+                            user.salvarNoFirebase();
+
+                            //salva o nome do usuario no profile do firebaseAuth
+                            UsuarioFirebase.atualizaNomeUsuario(user.getNome());
+
+
+                            Log.i("AUTH", "Cadastro de usuário completo");
+                            Toast.makeText(SignInActivity.this, "Cadastro completo com sucesso", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
 
-                            //tenta salvar o usuario no banco de dados
-                            try{
-                                String userId = Base64Custom.codeBase64(user.getEmail());
-                                user.setId(userId);
-                                //Quando desejar salvar no firebase, implementar o método dentro da classe User e chamar a função
-                                //user.salvarNoFirebase();
-
-                            }catch (Exception e){
-                                e.printStackTrace();
-                            }
                         }else{
                             String exception;
                             try {

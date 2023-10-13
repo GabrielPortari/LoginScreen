@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.loginscreen.R;
-import com.example.loginscreen.configuration.FirebaseConfiguration;
+import com.example.loginscreen.configuration.ConfiguracaoFirebase;
 import com.example.loginscreen.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,20 +27,14 @@ public class LoginActivity extends AppCompatActivity {
     private TextView textCadastro;
     private Button botaoEntrar;
 
-    private FirebaseAuth firebaseAuth = FirebaseConfiguration.getFirebaseAuthReference();
+    private FirebaseAuth firebaseAuth = ConfiguracaoFirebase.getFirebaseAuthReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //configurações iniciais
-        verificarUsuarioLogado();
-
-        editEmail = findViewById(R.id.textInputEmail_loginScreen);
-        editSenha = findViewById(R.id.textInputSenha_loginScreen);
-        textCadastro = findViewById(R.id.textCadastro_loginScreen);
-        botaoEntrar = findViewById(R.id.buttonEntrar_loginScreen);
+       configuracoesIniciais();
 
         //clicklistener do botao para validar entradas
         botaoEntrar.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +53,14 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void configuracoesIniciais(){
+        verificarUsuarioLogado();
+
+        editEmail = findViewById(R.id.textInputEmail_loginScreen);
+        editSenha = findViewById(R.id.textInputSenha_loginScreen);
+        textCadastro = findViewById(R.id.textCadastro_loginScreen);
+        botaoEntrar = findViewById(R.id.buttonEntrar_loginScreen);
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -127,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void verificarUsuarioLogado(){
-        firebaseAuth = FirebaseConfiguration.getFirebaseAuthReference();
+        firebaseAuth = ConfiguracaoFirebase.getFirebaseAuthReference();
         if(firebaseAuth.getCurrentUser() != null){
             abrirMainActivity();
         }

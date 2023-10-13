@@ -4,7 +4,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.loginscreen.helper.Base64Custom;
 import com.example.loginscreen.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -12,13 +11,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
-public class FirebaseUsuario {
+public class UsuarioFirebase {
 
     /*
     CLASSE PARA FAZER ALGUMAS CONFIGURAÇÕES COM O USUARIO LOGADO NO APP
      */
     public static String getIdUsuario(){
-        FirebaseAuth usuario = FirebaseConfiguration.getFirebaseAuthReference();
+        FirebaseAuth usuario = ConfiguracaoFirebase.getFirebaseAuthReference();
 
         String email = usuario.getCurrentUser().getEmail();
         String id = Base64Custom.codeBase64(email);
@@ -27,7 +26,7 @@ public class FirebaseUsuario {
     }
 
     public static FirebaseUser getUsuarioAtual(){
-        FirebaseAuth user = FirebaseConfiguration.getFirebaseAuthReference();
+        FirebaseAuth user = ConfiguracaoFirebase.getFirebaseAuthReference();
         return user.getCurrentUser();
     }
 
