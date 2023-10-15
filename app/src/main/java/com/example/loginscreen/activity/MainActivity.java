@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.menu_sair){
             deslogar();
+            abrirLoginActivity();
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -54,5 +55,10 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+    public void abrirLoginActivity(){
+        //chama a main activity
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
     }
 }
